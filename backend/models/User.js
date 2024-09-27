@@ -1,20 +1,21 @@
 const { DataTypes } = require('sequelize')
-const { sequelize } = require('./index')
+const { sequelize } = require('./index') // Ensure this path is correct
 
 const User = sequelize.define('User', {
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
   email: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true
+    unique: true,
+    validate: {
+      isEmail: true
+    }
   },
-  balance: {
-    type: DataTypes.FLOAT,
-    defaultValue: 0
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false
   }
+}, {
+  timestamps: true // This will automatically add createdAt and updatedAt fields
 })
 
 module.exports = User

@@ -1,24 +1,14 @@
 <template>
-  <div id="app">
-    <AppNavbar />
-    <router-view />
-    <AppFooter />
-  </div>
+  <v-app>
+    <!-- Router view to render the correct component based on the route -->
+    <v-main>
+      <router-view />
+    </v-main>
+  </v-app>
 </template>
 
 <script>
-import AppNavbar from './components/AppNavbar.vue'
-import AppFooter from './components/AppFooter.vue'
-
 export default {
-  name: 'App',
-  components: {
-    AppNavbar,
-    AppFooter
-  }
+  name: 'App'
 }
 </script>
-
-<style>
-/* Global styles can go here */
-</style>

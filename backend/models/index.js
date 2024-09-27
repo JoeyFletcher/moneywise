@@ -1,18 +1,28 @@
 const { Sequelize } = require('sequelize')
 require('dotenv').config()
 
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
+const sequelize = new Sequelize({
   dialect: 'sqlite',
+  storage: './backend/database.sqlite', // Path to your SQLite database file
   logging: false
 })
 
 const connectDB = async () => {
   try {
     await sequelize.authenticate()
-    console.log('Connection to SQLite3 database has been established successfully.')
+    console.log('Database connected successfully.')
   } catch (error) {
     console.error('Unable to connect to the database:', error)
   }
 }
 
-module.exports = { sequelize, connectDB }
+const syncModels = async () => {
+  try {
+    await sequelize.sync({ force: false }) // Ensure tables are synced
+    console.log('Database & tables created!')
+  } catch (error) {
+    console.error('Error syncing models:', error)
+  }
+}
+
+module.exports = { sequelize, connectDB, syncModels }
