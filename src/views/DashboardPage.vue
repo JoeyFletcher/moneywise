@@ -1,78 +1,93 @@
 <template>
-  <v-app>
-    <UserSidebar :drawer="drawer" @update:drawer="drawer = $event" />
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <user-sidebar :isOpen="isSidebarOpen" @toggle-sidebar="toggleSidebar" />
 
-    <v-app-bar app color="primary" dark>
-      <v-toolbar-title>Dashboard</v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn icon>
-        <v-icon>mdi-bell</v-icon>
-      </v-btn>
-      <v-btn icon>
-        <v-icon>mdi-account-circle</v-icon>
-      </v-btn>
-    </v-app-bar>
-
-    <v-main>
-      <v-container fluid>
-        <v-row>
-          <v-col cols="12" md="4">
-            <DashboardCard title="Metric 1" value="123" icon="mdi-chart-line" />
-          </v-col>
-          <v-col cols="12" md="4">
-            <DashboardCard title="Metric 2" value="456" icon="mdi-currency-usd" />
-          </v-col>
-          <v-col cols="12" md="4">
-            <DashboardCard title="Metric 3" value="789" icon="mdi-account-group" />
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-main>
-  </v-app>
+    <!-- Main content area -->
+    <div class="dashboard-content">
+      <!-- Header -->
+      <dashboard-header
+        :userName="userName"
+        :isSidebarOpen="isSidebarOpen"
+        @toggle-sidebar="toggleSidebar"
+      />
+      <!-- Dashboard Content Below the Header -->
+      <div class="dashboard-main">
+        <dashboard-content />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import UserSidebar from '@/components/UserSidebar.vue'
-import DashboardCard from '@/components/DashboardCard.vue'
+import DashboardHeader from '@/components/dashboard/DashboardHeader.vue'
+import DashboardContent from '@/components/dashboard/DashboardContent.vue'
+import UserSidebar from '@/components/dashboard/UserSidebar.vue'
 
 export default {
-  components: {
-    UserSidebar,
-    DashboardCard
-  },
+  name: 'DashboardPage',
   data() {
     return {
-      drawer: true // Controls the visibility of the sidebar
+      userName: 'John Doe',
+      isSidebarOpen: true // Tracks sidebar open/closed state
+    }
+  },
+  components: {
+    DashboardHeader,
+    DashboardContent,
+    UserSidebar
+  },
+  methods: {
+    toggleSidebar() {
+      this.isSidebarOpen = !this.isSidebarOpen
     }
   }
 }
 </script>
 
 <style scoped>
-.v-navigation-drawer {
+.dashboard-layout {
+  display: flex;
+  flex-direction: row;
+  height: 100vh; /* Ensure the layout fills the viewport height */
+}
+
+.dashboard-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-header {
+  width: 100%;
+  background-color: #2c3e50;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dashboard-main {
+  flex-grow: 1;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Sidebar adjustments */
+.user-sidebar {
   width: 250px;
-  transition: width 0.3s ease;
+  height: 100vh;
+  background-color: #2c3e50;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
-.v-navigation-drawer--mini {
-  width: 64px;
+.user-sidebar-closed {
+  width: 80px; /* Adjust sidebar width when closed */
 }
 
-.v-app-bar {
-  background-color: #1976D2; /* Primary color */
-}
-
-.v-container {
-  padding-top: 20px;
-}
-
-.v-col {
-  margin-bottom: 20px;
-}
-
-.retraction-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-}
 </style>
